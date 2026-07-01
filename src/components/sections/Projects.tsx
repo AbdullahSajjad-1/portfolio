@@ -461,7 +461,7 @@ export default function Projects() {
                       >
                         <div className="absolute inset-0 bg-[#c4a35a] rounded-full blur-sm opacity-50 group-hover:opacity-100 group-hover:blur-md transition-all duration-500"></div>
                         <div className="absolute inset-0 bg-gradient-to-r from-[#e8c070] to-[#c4a35a] rounded-full"></div>
-                        <span className="relative z-10 flex items-center gap-3 mix-blend-color-burn">
+                        <span className="relative z-10 flex items-center gap-3">
                           <span className="group-hover:animate-pulse">Launch System</span>
                           <span className="text-xl leading-none">↗</span>
                         </span>

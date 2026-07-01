@@ -34,13 +34,13 @@ export default function Contact() {
       <a
         href="mailto:abdullah.sajjad665@gmail.com"
         onClick={handleEmailClick}
-        className="reveal group relative px-10 py-5 bg-transparent border border-[#c4a35a] text-[#c4a35a] font-bold uppercase tracking-widest rounded-full overflow-hidden transition-colors duration-500 hover:text-black"
+        className="reveal group relative inline-flex items-center justify-center px-8 py-4 md:px-10 md:py-5 bg-transparent border border-[#c4a35a] text-[#c4a35a] font-bold uppercase tracking-widest rounded-full overflow-hidden transition-colors duration-500 hover:text-black whitespace-nowrap"
       >
         <span className="absolute inset-0 bg-[#c4a35a] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
         <span className="relative z-10">{copied ? 'Email Copied!' : 'Say Hello →'}</span>
       </a>
 
-      <div className="reveal absolute bottom-12 flex gap-10 font-mono text-xs uppercase tracking-widest text-white/30">
+      <div className="reveal absolute bottom-12 max-md:relative max-md:bottom-auto max-md:mt-24 flex flex-row flex-wrap justify-center items-center gap-6 md:gap-10 font-mono text-[10px] md:text-xs uppercase tracking-widest text-white/30">
         <a
           href="https://www.linkedin.com/in/abdullahsajjad12"
           target="_blank"
