@@ -239,11 +239,13 @@ export default function Projects() {
 
       <div className={`absolute inset-0 pointer-events-none z-0 transition-opacity duration-700`}>
         <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, 2]}>
-          <FloatingDevice
-            activeProject={activeIdx}
-            isExpanded={isExpanded}
-            projectImage={projects[activeIdx].projectImage}
-          />
+          <Suspense fallback={null}>
+            <FloatingDevice
+              activeProject={activeIdx}
+              isExpanded={isExpanded}
+              projectImage={projects[activeIdx].projectImage}
+            />
+          </Suspense>
         </Canvas>
       </div>
 

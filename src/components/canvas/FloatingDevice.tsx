@@ -27,7 +27,9 @@ function TexturedScreen({ url }: { url: string }) {
 
 // Preload all project textures to prevent the fallback color flash on first render
 const preloadImages = ['/wifi_thumbnail.png', '/optivraaa.jpeg', '/flowcare.jpeg'];
-preloadImages.forEach((url) => useTexture.preload(url));
+if (typeof window !== 'undefined') {
+  preloadImages.forEach((url) => useTexture.preload(url));
+}
 
 export default function FloatingDevice({
   activeProject,
