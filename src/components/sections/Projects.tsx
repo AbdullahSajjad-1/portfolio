@@ -233,7 +233,7 @@ export default function Projects() {
     if (!isMobile) return;
     const touchEndY = e.changedTouches[0].clientY;
     const target = e.currentTarget;
-    
+
     // Increased tolerance to 40px to handle Safari rubber banding and subpixel layouts
     const isAtBottom = Math.ceil(target.scrollTop + target.clientHeight) >= target.scrollHeight - 40;
     const isAtTop = target.scrollTop <= 40;
@@ -249,7 +249,7 @@ export default function Projects() {
         if (goTo) goTo(3, 1); // Go to MinorProjects
       }
     }
-    
+
     // Swipe DOWN (scroll up) at top
     if (isAtTop && swipeDistance < -50) {
       if (activeIdx > 0) {
@@ -299,7 +299,7 @@ export default function Projects() {
       setIsSectionActive(e.detail.index === 2);
     };
     window.addEventListener('sectionChange', handleSectionChange as EventListener);
-    
+
     // Initial check
     const getCurrent = (window as any).__getCurrentSection;
     if (getCurrent) {
@@ -315,7 +315,7 @@ export default function Projects() {
   // Handle expansion lock
   useEffect(() => {
     // Only lock ScrollEngine if this section is actually active AND expanded
-    (window as any).__isExpanded = isSectionActive && showExpanded; 
+    (window as any).__isExpanded = isSectionActive && showExpanded;
   }, [showExpanded, isSectionActive]);
 
   const activeProject = projects[activeIdx];
@@ -325,8 +325,8 @@ export default function Projects() {
 
       <div className={`absolute inset-0 pointer-events-none z-0 transition-opacity duration-700`}>
         {shouldRenderCanvas ? (
-          <Canvas 
-            camera={{ position: [0, 0, 5], fov: 45 }} 
+          <Canvas
+            camera={{ position: [0, 0, 5], fov: 45 }}
             dpr={[1, 2]}
             gl={{ antialias: false, powerPreference: "high-performance" }}
             fallback={<div className="absolute inset-0 bg-transparent flex items-center justify-center text-white/20 text-xs">WebGL not supported</div>}

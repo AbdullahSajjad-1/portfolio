@@ -18,7 +18,7 @@ export default function Hero() {
             AI Engineer — PyTorch — Deep Learning
           </p>
           <p className="reveal font-mono text-sm uppercase tracking-[0.25em] text-white/40">
-            Full-Stack Systems — Next.js — Supabase
+            Full-Stack Systems — Next.js — PostgreSQL
           </p>
         </div>
 

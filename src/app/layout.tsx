@@ -9,7 +9,7 @@ const outfit = Outfit({ subsets: ['latin'], variable: '--font-heading' });
 
 export const metadata: Metadata = {
   title: 'Abdullah Sajjad | Software Engineer',
-  description: 'AI Engineer & Full-Stack Systems Architect — Building high-performance platforms with PyTorch, Next.js, and Supabase.',
+  description: 'AI Engineer & Full-Stack Systems Architect — Building high-performance platforms with PyTorch, Next.js, and PosgreSQL.',
 };
 
 export default function RootLayout({
