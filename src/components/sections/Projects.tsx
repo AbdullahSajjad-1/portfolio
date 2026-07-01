@@ -307,7 +307,12 @@ export default function Projects() {
     <section className="section bg-[#0a0a0a] relative flex items-center px-8 md:px-24">
 
       <div className={`absolute inset-0 pointer-events-none z-0 transition-opacity duration-700`}>
-        <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, 2]}>
+        <Canvas 
+          camera={{ position: [0, 0, 5], fov: 45 }} 
+          dpr={[1, 2]}
+          gl={{ antialias: false, powerPreference: "high-performance" }}
+          fallback={<div className="absolute inset-0 bg-transparent flex items-center justify-center text-white/20 text-xs">WebGL not supported</div>}
+        >
           <Suspense fallback={null}>
             <FloatingDevice
               activeProject={activeIdx}
