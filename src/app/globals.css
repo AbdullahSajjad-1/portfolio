@@ -27,9 +27,10 @@ body {
 
 /* Section base styles */
 .section, .section-scrollable {
+  height: 100vh; /* Fallback for older Safari */
   height: 100dvh;
   width: 100%;
-  will-change: transform, clip-path;
+  will-change: transform; /* Removed clip-path to fix Safari black screen bug */
 }
 
 .section {
@@ -37,15 +38,10 @@ body {
 }
 
 .section-scrollable {
-  overflow: hidden;
-}
-
-@media (max-width: 768px) {
-  .section-scrollable {
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y !important;
 }
 
 @keyframes shimmer {

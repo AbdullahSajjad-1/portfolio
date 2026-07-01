@@ -197,10 +197,58 @@ export default function Projects() {
     });
   }, [isExpanded]);
 
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const showExpanded = isMobile || isExpanded;
+  const touchStartY = useRef(0);
+
+  const handleOverlayTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleOverlayTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isMobile) return;
+    const touchEndY = e.changedTouches[0].clientY;
+    const target = e.currentTarget;
+    
+    // Increased tolerance to 40px to handle Safari rubber banding and subpixel layouts
+    const isAtBottom = Math.ceil(target.scrollTop + target.clientHeight) >= target.scrollHeight - 40;
+    const isAtTop = target.scrollTop <= 40;
+    const swipeDistance = touchStartY.current - touchEndY;
+
+    // Swipe UP (scroll down) at bottom
+    if (isAtBottom && swipeDistance > 50) {
+      if (activeIdx < projects.length - 1) {
+        setActiveIdx(activeIdx + 1);
+        setTimeout(() => { target.scrollTop = 0; }, 10);
+      } else {
+        const goTo = (window as any).__goToSection;
+        if (goTo) goTo(3, 1); // Go to MinorProjects
+      }
+    }
+    
+    // Swipe DOWN (scroll up) at top
+    if (isAtTop && swipeDistance < -50) {
+      if (activeIdx > 0) {
+        setActiveIdx(activeIdx - 1);
+        setTimeout(() => { target.scrollTop = 0; }, 10);
+      } else {
+        const goTo = (window as any).__goToSection;
+        if (goTo) goTo(1, -1); // Go to About
+      }
+    }
+  };
+
   useEffect(() => {
     (window as any).__consumeScroll_Projects = (dir: number, activeIndex: number): boolean => {
       if (activeIndex !== 2) return false; // Only consume when Projects section (index 2) is active
-      if (isExpanded) return false; // Let user scroll native overlay
+      if (showExpanded) return false; // Let user scroll native overlay
 
       // Boundary protection: first or last project
       if ((activeIdx === 0 && dir === -1) || (activeIdx === projects.length - 1 && dir === 1)) {
@@ -225,12 +273,33 @@ export default function Projects() {
     return () => {
       delete (window as any).__consumeScroll_Projects;
     };
-  }, [updateContent, activeIdx, isExpanded]);
+  }, [updateContent, activeIdx, showExpanded]);
+
+  const [isSectionActive, setIsSectionActive] = useState(false);
+
+  useEffect(() => {
+    const handleSectionChange = (e: CustomEvent) => {
+      setIsSectionActive(e.detail.index === 2);
+    };
+    window.addEventListener('sectionChange', handleSectionChange as EventListener);
+    
+    // Initial check
+    const getCurrent = (window as any).__getCurrentSection;
+    if (getCurrent) {
+      setIsSectionActive(getCurrent() === 2);
+    } else {
+      // Default to true if we don't know, but it should be known
+      setIsSectionActive(false);
+    }
+
+    return () => window.removeEventListener('sectionChange', handleSectionChange as EventListener);
+  }, []);
 
   // Handle expansion lock
   useEffect(() => {
-    (window as any).__isExpanded = isExpanded;
-  }, [isExpanded]);
+    // Only lock ScrollEngine if this section is actually active AND expanded
+    (window as any).__isExpanded = isSectionActive && showExpanded; 
+  }, [showExpanded, isSectionActive]);
 
   const activeProject = projects[activeIdx];
 
@@ -264,7 +333,7 @@ export default function Projects() {
       )}
 
       <div className={`grid grid-cols-1 md:grid-cols-2 gap-16 w-full items-center z-10 transition-opacity duration-500 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 max-md:-translate-y-24">
           <p className="reveal font-mono text-xs uppercase tracking-[0.3em] text-[#c4a35a] mb-2">
             Selected Works
           </p>
@@ -306,14 +375,16 @@ export default function Projects() {
       </div>
 
       <AnimatePresence>
-        {isExpanded && (
+        {showExpanded && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onWheel={handleOverlayWheel}
+            onTouchStart={handleOverlayTouchStart}
+            onTouchEnd={handleOverlayTouchEnd}
             className="absolute inset-0 z-20 bg-black/80 backdrop-blur-md overflow-y-auto"
-            style={{ pointerEvents: 'auto' }}
+            style={{ pointerEvents: 'auto', touchAction: 'pan-y' }}
           >
             {activeProject.demoVideo ? (
               <div className="absolute top-0 left-0 right-0 h-[70vh] z-0 pointer-events-none">
@@ -347,7 +418,7 @@ export default function Projects() {
 
               <button
                 onClick={() => setIsExpanded(false)}
-                className="fixed top-8 right-8 px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-mono text-xs uppercase tracking-widest transition-colors z-50 rounded-full"
+                className="fixed top-8 right-8 px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-mono text-xs uppercase tracking-widest transition-colors z-50 rounded-full hidden md:block"
               >
                 Close ✕
               </button>

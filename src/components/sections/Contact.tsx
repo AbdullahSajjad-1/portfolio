@@ -14,7 +14,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="section bg-[#0a0a0a] flex flex-col justify-center items-center px-8 md:px-24 text-center">
+    <section className="section section-scrollable bg-[#0a0a0a] flex flex-col justify-center max-md:justify-start items-center px-8 md:px-24 text-center max-md:pt-32 max-md:pb-48">
       <p className="reveal font-mono text-xs uppercase tracking-[0.3em] text-[#c4a35a] mb-8">
         Get In Touch
       </p>

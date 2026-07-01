@@ -76,7 +76,7 @@ export default function FloatingDevice({
       const targetRotY = -state.pointer.x * 0.02 - 0.25;
       
       const targetX = isMobile ? 0 : 1.7;
-      const targetY = isMobile ? -2 : -0.4;
+      const targetY = isMobile ? -0.5 : -0.4;
       const targetZ = 0;
       const targetScale = isMobile ? 1.0 : 1.8;
 

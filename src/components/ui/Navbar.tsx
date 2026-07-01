@@ -84,30 +84,6 @@ export default function Navbar() {
           </button>
         ))}
       </nav>
-
-      {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex md:hidden items-center justify-center gap-6 px-6 py-3 rounded-full bg-white/5 backdrop-blur-md border border-white/10 pointer-events-auto shadow-2xl">
-        {sectionLabels.map((label, index) => (
-          <button
-            key={index}
-            onClick={() => handleClick(index)}
-            className="relative flex flex-col items-center justify-center p-2"
-          >
-            <span
-              className={`block rounded-full transition-all duration-300 ${
-                currentNavIndex === index
-                  ? 'w-2 h-2 bg-[#c4a35a] scale-125'
-                  : 'w-1.5 h-1.5 bg-white/30'
-              }`}
-            />
-            {currentNavIndex === index && (
-              <span className="absolute -bottom-3 text-[8px] font-mono uppercase tracking-widest text-[#c4a35a] whitespace-nowrap opacity-80">
-                {label}
-              </span>
-            )}
-          </button>
-        ))}
-      </nav>
     </>
   );
 }

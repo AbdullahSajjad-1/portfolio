@@ -47,6 +47,7 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
         gsap.set(next, { zIndex: 1 });
         currentIndex.current = index;
         setTimeout(() => {
+          (window as any).__ignoreUntilPause = true;
           animating.current = false;
         }, 500); // 500ms scroll cooldown after section transitions
       },
@@ -192,9 +193,12 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
         const timeSinceLastWheel = now - lastWheelTime.current;
         lastWheelTime.current = now;
 
+        if (timeSinceLastWheel > 150) {
+          (window as any).__ignoreUntilPause = false;
+        }
+
         if (animating.current || (window as any).__isExpanded) return;
-        // Require a 150ms pause in scrolling to clear trackpad inertia before allowing new transitions
-        if (timeSinceLastWheel < 150) return;
+        if ((window as any).__ignoreUntilPause) return;
 
         if (checkNativeScroll(-1)) return;
         if (runConsumers(-1)) return;
@@ -207,9 +211,12 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
         const timeSinceLastWheel = now - lastWheelTime.current;
         lastWheelTime.current = now;
 
+        if (timeSinceLastWheel > 150) {
+          (window as any).__ignoreUntilPause = false;
+        }
+
         if (animating.current || (window as any).__isExpanded) return;
-        // Require a 150ms pause in scrolling to clear trackpad inertia before allowing new transitions
-        if (timeSinceLastWheel < 150) return;
+        if ((window as any).__ignoreUntilPause) return;
 
         if (checkNativeScroll(1)) return;
         if (runConsumers(1)) return;
