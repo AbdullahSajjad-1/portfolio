@@ -22,7 +22,7 @@ const education = [
 
 export default function About() {
   return (
-    <section className="section bg-[#0f0f0f] flex items-center px-8 md:px-24 overflow-hidden">
+    <section className="section section-scrollable bg-[#0f0f0f] flex items-center px-8 md:px-24 max-md:overflow-y-auto max-md:pb-24 max-md:pt-24 max-md:block">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 w-full items-center">
 
         {/* Left: Heading + Education */}

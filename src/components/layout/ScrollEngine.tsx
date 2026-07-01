@@ -18,6 +18,7 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
   const animating = useRef(false);
   const observerRef = useRef<Observer | null>(null);
   const sectionsRef = useRef<HTMLElement[]>([]);
+  const lastWheelTime = useRef<number>(0);
 
   const goToSection = useCallback((index: number, direction: number) => {
     if (animating.current) return;
@@ -129,9 +130,6 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
         }
       );
     }
-
-    let boundaryStickTime = 0;
-
     const checkNativeScroll = (dir: number) => {
       const current = sectionsRef.current[currentIndex.current];
       if (!current) return false;
@@ -139,31 +137,32 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
       // Only apply native scroll boundaries to explicitly scrollable sections
       if (!current.classList.contains('section-scrollable')) return false;
 
-      const isScrollable = current.scrollHeight > current.clientHeight;
+      // Verify if overflow-y is actually scrollable in the computed layout (ignores hidden state on desktop)
+      const style = window.getComputedStyle(current);
+      if (style.overflowY !== 'auto' && style.overflowY !== 'scroll') return false;
+
+      // Require at least 15px of actual overflow to treat it as scrollable (prevents subpixel scale locks)
+      const isScrollable = current.scrollHeight > current.clientHeight + 15;
       if (!isScrollable) return false;
       
+      // When swiping DOWN (wants to go up)
       if (dir === -1) {
-         if (current.scrollTop > 0) {
-           boundaryStickTime = 0;
-           return true;
-         }
-      }
-      if (dir === 1) {
-         if (Math.ceil(current.scrollTop + current.clientHeight) < current.scrollHeight) {
-           boundaryStickTime = 0;
-           return true;
-         }
-      }
-
-      // At boundary of scrollable section: absorb heavy scrolling for 800ms
-      const now = Date.now();
-      if (boundaryStickTime === 0) {
-         boundaryStickTime = now;
-         return true;
-      } else if (now - boundaryStickTime < 800) {
-         return true;
+        const isAtTop = current.scrollTop <= 5; // 5px buffer for top boundary
+        if (!isAtTop) {
+          return true; // Allow native internal scroll, block GSAP
+        }
       }
       
+      // When swiping UP (wants to go down)
+      if (dir === 1) {
+        // 5px buffer for bottom boundary to account for browser zoom and subpixel layout variances
+        const isAtBottom = Math.ceil(current.scrollTop + current.clientHeight) >= current.scrollHeight - 5;
+        if (!isAtBottom) {
+          return true; // Allow native internal scroll, block GSAP
+        }
+      }
+
+      // If at boundary, transition immediately without artificial delays
       return false;
     };
 
@@ -189,7 +188,14 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
       type: 'wheel,touch,pointer',
       wheelSpeed: -1,
       onDown: () => {
+        const now = Date.now();
+        const timeSinceLastWheel = now - lastWheelTime.current;
+        lastWheelTime.current = now;
+
         if (animating.current || (window as any).__isExpanded) return;
+        // Require a 150ms pause in scrolling to clear trackpad inertia before allowing new transitions
+        if (timeSinceLastWheel < 150) return;
+
         if (checkNativeScroll(-1)) return;
         if (runConsumers(-1)) return;
         if (currentIndex.current > 0) {
@@ -197,14 +203,21 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
         }
       },
       onUp: () => {
+        const now = Date.now();
+        const timeSinceLastWheel = now - lastWheelTime.current;
+        lastWheelTime.current = now;
+
         if (animating.current || (window as any).__isExpanded) return;
+        // Require a 150ms pause in scrolling to clear trackpad inertia before allowing new transitions
+        if (timeSinceLastWheel < 150) return;
+
         if (checkNativeScroll(1)) return;
         if (runConsumers(1)) return;
         if (currentIndex.current < sections.length - 1) {
           goToSection(currentIndex.current + 1, 1);
         }
       },
-      tolerance: 50,
+      tolerance: 20,
       preventDefault: false,
     });
 

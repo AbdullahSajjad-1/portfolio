@@ -253,8 +253,7 @@ export default function Projects() {
       {!isExpanded && activeProject.demoVideo && (
         <button
           onClick={() => setIsExpanded(true)}
-          className="absolute z-20 flex flex-col items-center justify-center gap-1 cursor-pointer group"
-          style={{ right: '30%', top: '32%', transform: 'translate(50%, -50%)' }}
+          className="absolute z-20 flex flex-col items-center justify-center gap-1 cursor-pointer group top-[70%] right-1/2 translate-x-1/2 md:right-[30%] md:top-[32%] md:translate-x-[50%] -translate-y-1/2"
         >
           {/* Minimal play triangle — slightly more visible opacity */}
           <svg className="w-10 h-10 text-white/90 drop-shadow-lg group-hover:text-[#c4a35a] group-hover:scale-110 transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">

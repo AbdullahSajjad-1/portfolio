@@ -49,13 +49,21 @@ export default function FloatingDevice({
   useFrame((state, delta) => {
     if (!groupRef.current || !screenGroupRef.current) return;
 
+    const isMobile = state.viewport.width < 5;
+
     if (isExpanded) {
-      // Expanded: Lock to the RIGHT (x = 1.5), scale up, shift down slightly
+      // Expanded: Lock to the RIGHT (x = 1.5) on desktop, center on mobile. Shift back (z = -5) on mobile.
+      const targetX = isMobile ? 0 : 1.5;
+      const targetY = isMobile ? -0.4 : -0.4;
+      const targetZ = isMobile ? -5 : 0;
+      const targetScale = isMobile ? 1.5 : 2.5;
+
       groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, 0, delta * 4);
       groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, 0.4, delta * 4);
-      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, 1.5, delta * 4);
-      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, -0.4, delta * 4);
-      groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, 2.5, delta * 4));
+      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, delta * 4);
+      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, delta * 4);
+      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, delta * 4);
+      groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, targetScale, delta * 4));
 
       // Deconstruct: Screen lifts up (X-Ray effect)
       screenGroupRef.current.position.y = THREE.MathUtils.lerp(screenGroupRef.current.position.y, 1.8, delta * 3);
@@ -66,11 +74,18 @@ export default function FloatingDevice({
       // Face the laptop towards the left (towards the center of the screen)
       const targetRotX = state.pointer.y * 0.02;
       const targetRotY = -state.pointer.x * 0.02 - 0.25;
+      
+      const targetX = isMobile ? 0 : 1.7;
+      const targetY = isMobile ? -2 : -0.4;
+      const targetZ = 0;
+      const targetScale = isMobile ? 1.0 : 1.8;
+
       groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotX, delta * 2);
       groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotY, delta * 2);
-      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, 1.7, delta * 4);
-      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, -0.4, delta * 4);
-      groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, 1.8, delta * 4));
+      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, delta * 4);
+      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, delta * 4);
+      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, delta * 4);
+      groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, targetScale, delta * 4));
 
       // Normal: Screen attached (more upright)
       screenGroupRef.current.position.y = THREE.MathUtils.lerp(screenGroupRef.current.position.y, 0.75, delta * 4);
