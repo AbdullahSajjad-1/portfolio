@@ -207,6 +207,23 @@ export default function Projects() {
 
   const showExpanded = isMobile || isExpanded;
   const touchStartY = useRef(0);
+  const [shouldRenderCanvas, setShouldRenderCanvas] = useState(true);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const ua = window.navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(ua);
+    if (isIOS) {
+      const match = ua.match(/OS (\d+)_/);
+      if (match) {
+        const version = parseInt(match[1], 10);
+        // iOS 16 and older devices have buggy WebGL/render pipelines that crash on high-depth scenes
+        if (version <= 16) {
+          setShouldRenderCanvas(false);
+        }
+      }
+    }
+  }, []);
 
   const handleOverlayTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     touchStartY.current = e.touches[0].clientY;
@@ -307,20 +324,24 @@ export default function Projects() {
     <section className="section bg-[#0a0a0a] relative flex items-center px-8 md:px-24">
 
       <div className={`absolute inset-0 pointer-events-none z-0 transition-opacity duration-700`}>
-        <Canvas 
-          camera={{ position: [0, 0, 5], fov: 45 }} 
-          dpr={[1, 2]}
-          gl={{ antialias: false, powerPreference: "high-performance" }}
-          fallback={<div className="absolute inset-0 bg-transparent flex items-center justify-center text-white/20 text-xs">WebGL not supported</div>}
-        >
-          <Suspense fallback={null}>
-            <FloatingDevice
-              activeProject={activeIdx}
-              isExpanded={isExpanded}
-              projectImage={projects[activeIdx].projectImage}
-            />
-          </Suspense>
-        </Canvas>
+        {shouldRenderCanvas ? (
+          <Canvas 
+            camera={{ position: [0, 0, 5], fov: 45 }} 
+            dpr={[1, 2]}
+            gl={{ antialias: false, powerPreference: "high-performance" }}
+            fallback={<div className="absolute inset-0 bg-transparent flex items-center justify-center text-white/20 text-xs">WebGL not supported</div>}
+          >
+            <Suspense fallback={null}>
+              <FloatingDevice
+                activeProject={activeIdx}
+                isExpanded={isExpanded}
+                projectImage={projects[activeIdx].projectImage}
+              />
+            </Suspense>
+          </Canvas>
+        ) : (
+          <div className="absolute inset-0 bg-[#0a0a0a]" />
+        )}
       </div>
 
       {/* Watch Demo — styled as an embedded screen overlay */}

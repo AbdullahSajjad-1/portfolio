@@ -27,8 +27,7 @@ body {
 
 /* Section base styles */
 .section, .section-scrollable {
-  height: 100vh; /* Fallback for older Safari */
-  height: 100dvh;
+  height: 100%;
   width: 100%;
   will-change: transform; /* Removed clip-path to fix Safari black screen bug */
 }
