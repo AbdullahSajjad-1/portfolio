@@ -46,10 +46,7 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
         gsap.set(current, { visibility: 'hidden', zIndex: 0 });
         gsap.set(next, { zIndex: 1 });
         currentIndex.current = index;
-        setTimeout(() => {
-          (window as any).__ignoreUntilPause = true;
-          animating.current = false;
-        }, 500); // 500ms scroll cooldown after section transitions
+        animating.current = false;
       },
     });
 
@@ -134,7 +131,7 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
     const checkNativeScroll = (dir: number) => {
       const current = sectionsRef.current[currentIndex.current];
       if (!current) return false;
-      
+
       // Only apply native scroll boundaries to explicitly scrollable sections
       if (!current.classList.contains('section-scrollable')) return false;
 
@@ -145,7 +142,7 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
       // Require at least 15px of actual overflow to treat it as scrollable (prevents subpixel scale locks)
       const isScrollable = current.scrollHeight > current.clientHeight + 15;
       if (!isScrollable) return false;
-      
+
       // When swiping DOWN (wants to go up)
       if (dir === -1) {
         const isAtTop = current.scrollTop <= 5; // 5px buffer for top boundary
@@ -153,7 +150,7 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
           return true; // Allow native internal scroll, block GSAP
         }
       }
-      
+
       // When swiping UP (wants to go down)
       if (dir === 1) {
         // 5px buffer for bottom boundary to account for browser zoom and subpixel layout variances
@@ -189,16 +186,7 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
       type: 'wheel,touch,pointer',
       wheelSpeed: -1,
       onDown: () => {
-        const now = Date.now();
-        const timeSinceLastWheel = now - lastWheelTime.current;
-        lastWheelTime.current = now;
-
-        if (timeSinceLastWheel > 150) {
-          (window as any).__ignoreUntilPause = false;
-        }
-
         if (animating.current || (window as any).__isExpanded) return;
-        if ((window as any).__ignoreUntilPause) return;
 
         if (checkNativeScroll(-1)) return;
         if (runConsumers(-1)) return;
@@ -207,16 +195,7 @@ export default function ScrollEngine({ children }: ScrollEngineProps) {
         }
       },
       onUp: () => {
-        const now = Date.now();
-        const timeSinceLastWheel = now - lastWheelTime.current;
-        lastWheelTime.current = now;
-
-        if (timeSinceLastWheel > 150) {
-          (window as any).__ignoreUntilPause = false;
-        }
-
         if (animating.current || (window as any).__isExpanded) return;
-        if ((window as any).__ignoreUntilPause) return;
 
         if (checkNativeScroll(1)) return;
         if (runConsumers(1)) return;
