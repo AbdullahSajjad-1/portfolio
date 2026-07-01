@@ -12,6 +12,13 @@ const minorProjects = [
     tech: 'NEXT.JS / 3D MODELING / AI',
   },
   {
+    id: 'automation',
+    name: 'Automation Workflow',
+    desc: 'Engineered autonomous AI-driven workflows and integrations utilizing LangChain, Supabase, and OpenAI to automate content production, business processes, and email marketing pipelines.',
+    link: '',
+    tech: 'LANGCHAIN / SUPABASE / OPENAI',
+  },
+  {
     id: 'safecircle',
     name: 'SafeCircle',
     desc: 'A digital safety platform focused on women empowerment and community awareness. Provides real-time safety alerts, trusted contacts management, and community-driven safety reporting. Achieved a 95 PageSpeed score.',
@@ -25,6 +32,7 @@ const minorProjects = [
     link: '',
     tech: 'NEXT.JS / TAILWIND / SUPABASE',
   },
+
 ];
 
 export default function MinorProjects() {

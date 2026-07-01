@@ -1,7 +1,7 @@
 const techStack = [
   'Next.js', 'React', 'TypeScript', 'Python', 'C++', 'PyTorch', 
   'Supabase', 'PostgreSQL', 'Node.js', 'Three.js',
-  'Github Actions', 'CI/CD', 'AI Automation', 'WordPress', 'SEO',
+  'Github Actions', 'CI/CD', 'AI Automation', 'Automation Workflows', 'WordPress', 'SEO',
   'Leadership', 'Team Management', 'Operations Management',
 ];
 

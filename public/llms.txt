@@ -1,0 +1,35 @@
+# Abdullah Sajjad
+AI Engineer & Full-Stack Systems Architect
+Location: Lahore, Pakistan
+Email: abdullah.sajjad665@gmail.com
+LinkedIn: https://www.linkedin.com/in/abdullahsajjad12
+GitHub: https://github.com/AbdullahSajjad-1
+
+## About
+My background is a rare intersection of deep hard-engineering, AI, PyTorch, Signal Processing, and scalable systems architecture using Next.js, Supabase, and PostgreSQL. I don't just build websites; I engineer high-performance platforms, automated workflows, and complex neural networks that solve real problems at scale.
+
+## Experience
+- Web Dev Intern at GAOtek Inc. (Jun 2025 — Aug 2025): Building responsive frontend components, optimizing web performance, and implementing modern UI patterns for enterprise applications.
+- Chapter Lead at GDGoC BNU (Sep 2024 — Present): Leading technical events, workshops, and community engagement for developers.
+- Team Lead at IBEX (Jun 2023 — Jun 2024): Managed a cross-functional team delivering high-quality client solutions under tight deadlines.
+- SEO & Digital Marketing Associate at Tech Titans (Apr 2021 — Jan 2023): Handled SEO initiatives while supporting programming and digital marketing campaigns.
+- SEO Specialist at Tech Andaz (Jun 2021 — Jun 2022): Executed SEO strategies to improve online visibility and search rankings.
+- Non-Profit Leadership at Emaan Dar Foundation (Jul 2020 — Jun 2022): Led operations, donation drives, volunteer coordination, and digital outreach.
+- Marketing & Social Media Manager at The Westral (Jun 2021 — Jul 2021): Managed social media presence using custom illustrations and visual content.
+
+## Featured Projects
+- AI Wi-Fi CSI: Built an end-to-end signal processing and machine learning pipeline to perform non-intrusive Human Activity Recognition across 7 distinct gestures using Wi-Fi. Features 5-second zero-shot calibration to strip environmental noise.
+- OptiVRAAA: Built an optimization framework integrating meta-heuristic algorithms (VRA, AAA) and advanced signal processing in Python. Achieved ~88% reduction in execution time for high-dimensional functions.
+- Optivra wms: Full-stack warehouse management platform supporting inventory tracking, order processing, and box labeling. Integrated directly with Shopify, Amazon, UPS, and DHL.
+- FlowCare: A mental healthcare system using personalized ML models.
+- AI Automation Systems / Automation Workflow: Engineered autonomous AI workflows and integrations utilizing LangChain, Supabase, and OpenAI to automate content production, business processes, and email marketing pipelines.
+- BuildFromIt: Platform allowing users to upload furniture images to find 3D models and assembly instructions.
+- SafeCircle: Women's safety platform with real-time alerts.
+- PetDhoond: Pet adoption marketplace.
+
+## Education
+- BS Computer Science at Beaconhouse National University (2024 — 2028)
+- A Levels at Aitchison College (2011 — 2023)
+
+## Technical Skills
+Next.js, React, TypeScript, Python, C++, PyTorch, Supabase, PostgreSQL, Node.js, Three.js, Github Actions, CI/CD, AI Automation, Automation Workflows, WordPress, SEO, Leadership, Operations Management.
