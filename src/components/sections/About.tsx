@@ -70,7 +70,7 @@ export default function About() {
             <p className="reveal text-base text-white/60 leading-relaxed">
               My background is a rare intersection of deep hard-engineering, AI,
               PyTorch, Signal Processing, and scalable systems architecture using
-              Next.js, Supabase, and PostgreSQL.
+              Next.js, mySQL, and PostgreSQL.
             </p>
             <p className="reveal text-base text-white/60 leading-relaxed">
               I don&apos;t just build websites. I engineer high-performance platforms,
